@@ -12,7 +12,7 @@
     "prisma:migrate": "prisma migrate dev --preview-feature"
   },
   "keywords": [],
-  "author": "Angel",
+  "author": "Brais",
   "license": "ISC",
   "description": "```bash\r npm init -y\r npm i -D typescript tsx @types/node\r npx tsc --init",
   "devDependencies": {
