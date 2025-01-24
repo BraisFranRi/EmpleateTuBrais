@@ -33,11 +33,10 @@ export class AuthService{
         // Ver si el usuario existe 
         const findUser = await prisma.user.findUnique({where:{email}})
         if(!findUser) throw new Error(`Invalid user or password`)
-
         // Ver si el password coincide
         const correctPass = await bcrypt.compare(password, findUser.password)
         if(!correctPass) throw new Error(`Invalid user or password`)
-            
+
         // Generar el token de autenticación
         const token = jwt.sign(
             {id:findUser.id, email:findUser.email, role:findUser.role}, 

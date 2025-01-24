@@ -17,7 +17,6 @@ export class AuthController{
     static async login(req:Request, res:Response){
         try{
             const userData = req.body
-            // console.log(userData)
             // TO DO -> Comprobar body
             const token = await AuthService.login(userData.email, userData.password)
             // TO DO -> Inyectar una cookie al cliente
