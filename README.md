@@ -23,3 +23,16 @@ npm i --save-dev @types/compression
 npm i cookie-parser
 npm i --save-dev @types/cookie-parser
 ```
+Ejercicio 1:
+Crea el endpoint que liste todos los usuarios de la web
+A este endpoint solo puede acceder el usuario role=admin
+Crea routes, services, controllres y middleware necesarios
+
+Ejercicio 2:
+Valida mediante un middleware
+El formulario de registro
+ - Comprueba que el email sea válido
+ - Comprueba que el password sea de mínimo 4 letras
+
+Ejercicio 3:
+Crea un frontend con Vite + Tailwind 4.0 + react
