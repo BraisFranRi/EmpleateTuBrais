@@ -2,6 +2,7 @@ import { AuthService } from "@/services/auth.service";
 import {Response, Request} from 'express'
 
 export class AuthController{
+
     static async register(req:Request, res:Response){
         try{
             const userData = req.body
@@ -20,6 +21,12 @@ export class AuthController{
             // TO DO -> Comprobar body
             const token = await AuthService.login(userData.email, userData.password)
             // TO DO -> Inyectar una cookie al cliente
+            res.cookie('token', token,{
+                maxAge: 60*60*1000, // 1 Hora de caducidad
+                httpOnly: true, // No se puede acceder mediante js
+                secure: false, // Solo se envia si usas https
+                sameSite: 'strict' // Evita ataques CSRF (Cook)
+            })
             res.status(201).json({message: 'Login successfull', token})
         }catch(error){
             res.status(409).json({message: 'Fallo al logear al usuario'})
