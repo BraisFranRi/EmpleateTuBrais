@@ -1,7 +1,6 @@
 import {Response, Request, NextFunction} from 'express'
 import jwt from "jsonwebtoken"
 
-const TOKEN_PASSWORD = process.env.TOKEN_PASSWORD || 'pass'
 
 export const isAdmin = (req:Request, res:Response, next:NextFunction):any => {
     //const token = req.headers.authorization?.split(" ")[1]

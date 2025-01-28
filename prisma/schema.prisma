@@ -20,7 +20,7 @@ model User{
   email     String @unique
   password  String
   role      String? //admin   VIP   null
-  course    Boolean?
+  course    String?
   active    Boolean @default(true)
   acceptNotifications Boolean @default(true)
   createdAt DateTime @default(now())
