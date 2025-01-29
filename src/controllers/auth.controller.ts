@@ -1,20 +1,20 @@
 import { AuthService } from "@/services/auth.service";
-import {Response, Request} from 'express'
+import {Response, Request, NextFunction} from 'express'
 
 export class AuthController{
 
-    static async register(req:Request, res:Response){
+    static async register(req:Request, res:Response, next:NextFunction){
         try{
             const userData = req.body
             // console.log(userData)
             const newUser = await AuthService.register(userData)
             res.status(201).json({message: 'User register successfully', newUser})
         }catch(error){
-            res.status(409).json({message: 'Fallo al registrar al usuario' + error})
+            next(error)
         }
     }
 
-    static async login(req:Request, res:Response){
+    static async login(req:Request, res:Response, next:NextFunction){
         try{
             const userData = req.body
             // TO DO -> Comprobar body
@@ -28,7 +28,7 @@ export class AuthController{
             })
             res.status(201).json({message: 'Login successfull', token})
         }catch(error){
-            res.status(409).json({message: 'Fallo al logear al usuario'})
+            next(error)
         }
     }
 

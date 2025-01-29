@@ -23,6 +23,57 @@ model User{
   course    String?
   active    Boolean @default(true)
   acceptNotifications Boolean @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  offers    Offer[]
+  rate      Rate[]
+}
+
+model Offer {
+  id            Int @id @default(autoincrement()) 
+  title         String
+  description   String?
+  active        Boolean @default(true)
+  contactEmail  String?
+  location      String?
+  published     DateTime @default(now())  // iso8601
+  expired       DateTime    // iso8601
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  idCategory    Int?
+  category      Category? @relation(fields:[idCategory], references: [id])
+  // FK
+  idUserCreator Int
+  user          User? @relation(fields:[idUserCreator], references: [id])
+
+  rate          Rate[]
+}
+
+model Category {
+  id          Int @id @default(autoincrement()) 
+  name        String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  offers      Offer[]
+}
+
+model Rate{
+  idUser    Int
+  user      User @relation(fields:[idUser], references:[id])
+
+  idOffer   Int
+  offer     Offer @relation(fields:[idOffer], references:[id])
+
+  value     Int
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@id([idUser, idOffer])
 }

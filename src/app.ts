@@ -1,6 +1,7 @@
 import express, {Response, Request} from 'express'
 import authRouter from './routes/auth.routes'
 import userRouter from './routes/user.routes'
+import offerRouter from './routes/offer.routes'
 import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 import compression from 'compression'
@@ -29,6 +30,7 @@ app.use(limiter)
 
 app.use('/api/auth',authRouter)
 app.use('/api/users',userRouter)
+app.use('/api/offerts',offerRouter)
 
 app.get('/', (req:Request, res:Response)=>{
     res.send('Bienvenido al backend (api rest)')
