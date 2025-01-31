@@ -13,7 +13,7 @@ const app = express()
 app.use(cookieParser())
 // To do limitar cors 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))
