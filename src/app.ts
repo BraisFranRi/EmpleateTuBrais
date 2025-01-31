@@ -23,7 +23,7 @@ app.use(helmet())
 app.use(compression())
 
 const limiter = rateLimit({
-    max: 3,
+    max: 100,
     windowMs: 1000 * 15 * 60
 })
 app.use(limiter)

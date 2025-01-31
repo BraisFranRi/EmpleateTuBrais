@@ -26,7 +26,7 @@ export class OfferController{
         try{
             const offerData = req.body
             const newOffer = await OfferService.save(offerData)
-            res.status(201).json({message: 'User register successfully', newOffer})
+            res.status(201).json({message: 'Offer created successfully', newOffer})
         }catch(error){
             next(error)
         }
