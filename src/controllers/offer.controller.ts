@@ -1,4 +1,4 @@
-import { OfferService } from '@/services/offer.service'
+import { OfferService } from '../services/offer.service'
 import {Response, Request, NextFunction} from 'express'
 
 export class OfferController{

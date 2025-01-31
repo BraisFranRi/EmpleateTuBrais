@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {OfferController} from "../controllers/offer.controller";
-import { isAdmin } from "@/middlewares/user.middleware";
+import { isAdmin } from "../middlewares/user.middleware";
 const router = Router()
 
 // localhost:3000/api/offerts/
