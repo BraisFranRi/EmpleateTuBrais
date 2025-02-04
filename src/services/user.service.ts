@@ -1,7 +1,5 @@
+import { prisma } from "../database/database"
 import { HttpException } from "../exceptions/httpException"
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient()
 
 export class UserService {
 

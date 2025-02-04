@@ -1,12 +1,23 @@
+import { prisma } from "../database/database"
 import { HttpException } from "../exceptions/httpException"
-import { Offer, PrismaClient } from "@prisma/client"
+import { Offer } from "@prisma/client"
 
-const prisma = new PrismaClient()
 
 export class OfferService {
 
-    static async getAll(){
-        return await prisma.offer.findMany()
+    // localhost:3000/api/offer/?title=dam
+    static async getAll(title:string = ''){
+        return await prisma.offer.findMany({
+            where: title?{
+                title:{
+                    contains: title
+                }
+            } : {},
+            orderBy:{
+                createdAt: 'desc'
+            },
+            take: 100
+        })
     }
 
     static async getById(id:number){
@@ -15,32 +26,24 @@ export class OfferService {
             return findOffer
     }
 
-    static async save(offer:Offer){
-        const findOffer = await prisma.offer.findUnique({where:{id: offer.id}})
-        if(findOffer) throw new HttpException(409,`Offer ${offer.title} already exists`)
+    static async save(idUser:number,offer:Offer){        
+        return await prisma.offer.create({data:{...offer,idUserCreator: idUser}}) 
+    }
+    
+    static async update(id:number,newOffer:Offer){
+        const findOffer = await prisma.offer.findUnique({where:{id}})
+        if(!findOffer) throw new HttpException(404, 'Offer does not exists')
+            
+        await prisma.offer.update({where:{id},data:{...newOffer}})
+    }
+
+    static async delete(id:number){
+        await prisma.offer.delete({where:{id}})
+    }
         
-        return await prisma.offer.create({data:{...offer}})
-    }
-
-    static async delete(offer:Offer){
-        const findOffer = await prisma.offer.findUnique({where:{id: offer.id}})
-        if(!findOffer) throw new HttpException(404,'Offer not found')
-        
-        await prisma.offer.delete({where:{id: offer.id}})
-    }
-
-    static async update(newOffer:Offer){
-        const findOffer = await prisma.offer.findUnique({where:{id: newOffer.id}})
-        if(!findOffer) throw new HttpException(404,'Offer not found')
-
-        await prisma.offer.update({where:{id: newOffer.id},data:{...newOffer}})
-    }
-
     static async rate(offerToRate:Offer, userId:number){
         const findOffer = await prisma.offer.findUnique({where:{id: offerToRate.id}})
         if(!findOffer) throw new HttpException(404,'Offer not found')
-
-        
         
     }
 

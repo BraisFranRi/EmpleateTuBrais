@@ -14,7 +14,7 @@ export class OfferController{
 
     static async getById(req:Request, res:Response, next:NextFunction){
         try{
-            const offerId = req.body.offer.id
+            const offerId = Number.parseInt(req.params.id)
             const offer = await OfferService.getById(offerId)
             res.status(200).json(offer)
         }catch(error){
@@ -34,8 +34,8 @@ export class OfferController{
 
     static async delete(req:Request, res:Response, next:NextFunction){
         try{
-            const offerData = req.body
-            await OfferService.delete(offerData)
+            const id = Number.parseInt(req.params.id)
+            const deletedOffer = await OfferService.delete(id)
             res.status(201).json({message: 'Offer deleted successfully'})   
         }catch(error){
             next(error)
@@ -45,19 +45,32 @@ export class OfferController{
     static async update(req:Request, res:Response, next:NextFunction){
         try{
             const offerData = req.body
-            const newOffer = await OfferService.update(offerData)
+            const id = Number.parseInt(req.params.id)
+            const newOffer = await OfferService.update(id,offerData)
         }catch(error){
             next(error)
         }
     }
 
     static async rate(req:Request, res:Response, next:NextFunction){
-        const offerData = req.body
-        const userId = req.cookies.token.id
-        const newRate = await OfferService.rate(offerData,userId)
+        try{
+            const {value} = req.body
+            const id = Number.parseInt(req.params.id)
+            const userId = req.body.user.id
+            await OfferService.rate(userId, id, value)
+            res.status(200).json({message: 'Offer rate succesfully'})
+        }catch(error){
+            next(error)
+        }
     }
 
     static async getRate(req:Request, res:Response, next:NextFunction){
-        console.log('Get all offers')
+        try{
+            const id = Number.parseInt(req.params.id)
+            await OfferService.getRate(id)
+            res.status(200).json({message: 'Offer rate succesfully'})
+        }catch(error){
+            next(error)
+        }
     }
 }

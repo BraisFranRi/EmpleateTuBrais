@@ -22,6 +22,11 @@ npm i --save-dev @types/compression
 
 npm i cookie-parser
 npm i --save-dev @types/cookie-parser
+
+npm i cors
+npm i --save-dev @types/cors
+
+npm i express-validator
 ```
 Ejercicio 1:
 Crea el endpoint que liste todos los usuarios de la web
