@@ -31,6 +31,7 @@ export class OfferService {
     }
     
     static async update(id:number,newOffer:Offer){
+        
         const findOffer = await prisma.offer.findUnique({where:{id}})
         if(!findOffer) throw new HttpException(404, 'Offer does not exists')
             
@@ -41,10 +42,56 @@ export class OfferService {
         await prisma.offer.delete({where:{id}})
     }
         
-    static async rate(offerToRate:Offer, userId:number){
-        const findOffer = await prisma.offer.findUnique({where:{id: offerToRate.id}})
-        if(!findOffer) throw new HttpException(404,'Offer not found')
+    static async rate(idUser:number, idOffer:number, value:number){
+
+        const findOffer = await prisma.offer.findUnique({where:{id:idOffer}})
+        if(!findOffer) throw new HttpException(404, 'Offer does not exists')
+
+        // Poner un middleware
+        if(value < 0 || value > 5) throw new HttpException(400, 'Rate value must be between 1 adn 5')
+
+        await prisma.rate.upsert({
+            where:{
+                idUser_idOffer:{ idUser, idOffer }
+            },
+            update:{
+                value
+            },
+            create:{
+                idUser, idOffer, value
+            }
+        })
         
+    }
+
+    static async getRate(idOffer:number){
+
+        const findOffer = await prisma.offer.findUnique({where:{id:idOffer}})
+        if(!findOffer) throw new HttpException(404, 'Offer does not exists')
+
+        const ratingStats = await prisma.rate.aggregate({
+            where:{idOffer},
+            _avg:{value:true},
+            _count:{value:true}
+        })
+
+        return {
+            totalRatings: ratingStats._count.value,
+            averageRatings: ratingStats._avg.value?.toFixed(2)
+        }
+    }
+
+    static async getMyRate(idUser:number, idOffer: number){
+        
+        const findOffer = await prisma.offer.findUnique({where:{id:idOffer}})
+        if(!findOffer) throw new HttpException(404, 'Offer does not exists')
+
+        return await prisma.rate.findUnique({
+            where:{
+                idUser_idOffer:{ idUser, idOffer }
+            },
+            select: {value:true}
+        })
     }
 
 } 

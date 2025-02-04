@@ -17,6 +17,6 @@ router.put('/:id', isAdmin,OfferController.update) // Modificar una oferta
 
 //POST con id de la oferta valor en el {body}
 router.post('/:id/rate/', OfferController.rate) // Calificamos una oferta x  
-router.get('/:id/rate/', OfferController.getRate)// Vemos que calificación (total) tiene una oferta?
+router.get('/:id/myRate/', OfferController.getRate)// Vemos que calificación (total) tiene una oferta?
 
 export default router

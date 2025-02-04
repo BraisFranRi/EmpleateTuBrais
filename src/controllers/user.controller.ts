@@ -6,7 +6,7 @@ export class UserController{
     static async profile(req:Request, res:Response, next:NextFunction) {
         // Quien????????
         try{
-            const email = req.body.user.email
+            const email = req.user.email
             const user = await UserService.getByEmail(email)
             res.status(200).json(user)
         }catch(error){
