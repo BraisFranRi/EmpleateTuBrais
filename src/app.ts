@@ -13,7 +13,7 @@ const app = express()
 app.use(cookieParser())
 // To do limitar cors 
 app.use(cors({
-    origin: '*',
+    origin: ['http://localhost:5173','*'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))
@@ -30,7 +30,7 @@ app.use(limiter)
 
 app.use('/api/auth',authRouter)
 app.use('/api/users',userRouter)
-app.use('/api/offerts',offerRouter)
+app.use('/api/offers',offerRouter)
 
 app.get('/', (req:Request, res:Response)=>{
     res.send('Bienvenido al backend (api rest)')
