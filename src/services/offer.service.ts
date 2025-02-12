@@ -9,14 +9,23 @@ export class OfferService {
     static async getAll(title:string = ''){
         return await prisma.offer.findMany({
             where: title?{
-                title:{
-                    contains: title
-                }
+                ...(title && {
+                    title: {
+                        contains: title,
+                    }
+                })
             } : {},
             orderBy:{
                 createdAt: 'desc'
             },
-            take: 100
+            take: 100,
+            include: {
+                category: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
         })
     }
 
@@ -39,7 +48,11 @@ export class OfferService {
     }
 
     static async delete(id:number){
-        await prisma.offer.delete({where:{id}})
+        try{
+            return await prisma.offer.delete({where:{id}})
+        }catch(error){
+            throw new HttpException(404,'Offer not found')
+        }
     }
         
     static async rate(idUser:number, idOffer:number, value:number){
